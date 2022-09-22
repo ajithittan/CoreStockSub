@@ -4,12 +4,7 @@ require('dotenv').config()
 const Redis = require("ioredis");
 console.log(process.env.REDIS_SERVER_PUBSUB)
 
-const redis = new Redis({
-  host: '192.168.1.210',
-  port: 6379,
-  username: 'sarphira-user',
-  password: 'SarPhira1290'
-});
+const redis = new Redis();
 
 const messagesfromredis = []
 
@@ -28,7 +23,13 @@ process.env.SUBSCRIBE_CHANNEL.split(',').map(eachChannel =>{
 redis.on("message", (channel, message) => {
     console.log(`Received ${message} from ${channel}`);
     messagesfromredis.push(message)
+    processEvent(channel, message)
 });
+
+const processEvent = (channel, message) =>{
+  const msgProcessor = require('./server/handleMessages')
+  msgProcessor.processMessage(channel, message)
+}
 
 app.get("/",(req,res) =>{
     res.send(messagesfromredis)
