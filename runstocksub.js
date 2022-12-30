@@ -4,7 +4,7 @@ require('dotenv').config()
 const Redis = require("ioredis");
 console.log(process.env.REDIS_SERVER_PUBSUB)
 
-const redis = new Redis();
+const redis = new Redis({url:process.env.REDIS_SERVER_PUBSUB});
 
 const messagesfromredis = []
 
