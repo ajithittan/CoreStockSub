@@ -1,10 +1,13 @@
 const express = require('express')
 const app = express()
 require('dotenv').config()
+const bodyParser = require('body-parser');
 const Redis = require("ioredis");
 console.log(process.env.REDIS_SERVER_PUBSUB)
 
 const redis = new Redis({url:process.env.REDIS_SERVER_PUBSUB});
+app.disable('x-powered-by');
+app.use(bodyParser.json({limit: '50mb'}));
 
 const messagesfromredis = []
 
